@@ -18,7 +18,7 @@ type ClientOptions struct {
 type Client struct {
 	apiKey  string
 	baseUrl string
-	cli     *http.Client
+	Cli     *http.Client
 }
 
 const DEFAULT_ANTHROPIC_BASE_URL = "https://api.anthropic.com/v1"
@@ -50,7 +50,7 @@ func NewClient(opts ...ClientOptions) *Client {
 	return &Client{
 		apiKey:  ANTHROPIC_API_KEY,
 		baseUrl: ANTHROPIC_BASE_URL,
-		cli:     &http.Client{},
+		Cli:     &http.Client{},
 	}
 }
 
@@ -66,7 +66,7 @@ func (c *Client) CreateMessages(mr MessagesRequest) (*MessagesResponse, error) {
 	req.Header.Set("X-API-KEY", c.apiKey)
 	req.Header.Set("Anthropic-Version", "2023-06-01")
 	req.Header.Set("Content-Type", "application/json")
-	resp, err := c.cli.Do(req)
+	resp, err := c.Cli.Do(req)
 	if err != nil {
 		return &MessagesResponse{}, errors.New("[HTTP Do Request] " + err.Error())
 	}
@@ -108,7 +108,7 @@ func (c *Client) CreateMessagesStream(mr MessagesRequest) (*MessagesStream, erro
 	req.Header.Set("Accept", "text/event-stream")
 	req.Header.Set("Connection", "keep-alive")
 	req.Header.Set("Cache-Control", "no-cache")
-	resp, err := c.cli.Do(req)
+	resp, err := c.Cli.Do(req)
 	if err != nil {
 		return &MessagesStream{}, errors.New("[HTTP Do Request] " + err.Error())
 	}
